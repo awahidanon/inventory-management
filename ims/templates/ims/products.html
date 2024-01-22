@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container text-center">
+<h4> Products available in store</h4> </div>
+<div class="container" > 
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Category</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Assigned Date</th>
+        <th scope="col">Department</th> 
+        <th scope="col">Operation</th> 
+        
+      </tr>
+    </thead>
+    <tbody>
+        
+      {% for products in assigned_product %}
+      
+      <tr> 
+        <td>{{products.pro_id}}</td>
+        <td>{{products.name}}</td>
+        <td>{{products.product}}</td>
+        <td>{{products.quantity}}</td>
+        <td>{{products.assigned_date}}</td>
+        <td>{{products.department}}</td>
+        <td> <a href="{% url 'updateProduct' products.id %}" class="text-decoration-none"> <button type="button" class="btn btn-secondary">Update</button> </a>
+<a href="{% url 'deleteProduct' products.id %}" class="text-decoration-none"> <button type="button" class="btn btn-danger">Delete</button> </a> </td>
+       
+      </tr>
+     
+     
+      {% endfor %}
+      
+
+    </div>
+{% endblock %}

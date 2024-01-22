@@ -1,0 +1,80 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+{% for products in product%}
+
+<div class="container">
+  
+
+   <form class="row g-3" action="" method="POST"  >
+     <div class="col-md-6">
+
+      
+         <label for="exampleFormControlInput1" class="form-label">product ID</label>
+         <input type="number" class="form-control" id="exampleFormControlInput1" value="{{products.id}}" readonly >
+       
+     </div>
+     
+     <div class="col-md-6">
+
+      
+       <label for="exampleFormControlInput1" class="form-label">product Name</label>
+       <input type="text" class="form-control" id="exampleFormControlInput1" value="{{products.product_name}}" readonly >
+     
+   </div>
+  
+ 
+ <div class="col-md-6"> 
+   <label for="exampleFormControlInput1" class="form-label">Quanyity</label>
+   <input type="text" readonly value="{{products.quantity}}" class="form-control" id="exampleFormControlInput1" > 
+</div>
+
+<div class="col-md-6"> 
+ <label for="exampleFormControlInput1" class="form-label">Category</label>
+ <input type="text" readonly value="{{products.product_category}}" class="form-control" id="exampleFormControlInput1"  > 
+</div>
+<div class="col-md-6"> 
+<label for="exampleFormControlInput1" class="form-label">Purchased date</label>
+<input type="text" readonly value="{{products.purchased_date}}" class="form-control" id="exampleFormControlInput1"  > 
+</div>
+<div class="col-md-6"> 
+<label for="exampleFormControlInput1" class="form-label">Price</label>
+<input type="text" readonly value="{{products.price}}" class="form-control" id="exampleFormControlInput1"  > 
+</div>
+<div class="col-md-6"> 
+<label for="exampleFormControlInput1" class="form-label">Tax</label>
+<input type="text" readonly value="{{products.Tax}}" class="form-control" id="exampleFormControlInput1"  > 
+</div>
+<div class="col-md-6"> 
+<label for="exampleFormControlInput1" class="form-label">Total</label>
+<input type="text" readonly value="{{products.Total}}" class="form-control" id="exampleFormControlInput1"  > 
+</div>
+<div class="col-md-6"> 
+<label for="exampleFormControlInput1" class="form-label">Seller</label>
+<input type="text" readonly value="{{products.seller}}" class="form-control" id="exampleFormControlInput1"  > 
+</div>
+
+<br>
+<div class=" text-center" >
+<a href="{% url 'update' products.id %}" class="text-decoration-none"> <button type="button" class="btn btn-secondary">Update</button> </a>
+<a href="{% url 'delete' products.id %}" class="text-decoration-none"> <button type="button" class="btn btn-danger">Delete</button> </a>
+</div>
+
+    {% if success_message %}
+    <p style="color: green;">{{ success_message }}</p>
+    {% endif %}
+
+    {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+
+ </form>
+
+ 
+</div>
+
+{% endfor %}
+
+{% endblock %}

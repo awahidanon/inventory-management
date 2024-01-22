@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h1 class="text-center"> Fill the form with correct information</h1>
+<hr>
+<div class="container">
+
+    
+     
+      <form class="row g-3" action="" method="POST" enctype="multipart/form-data" >
+      
+        {%   csrf_token %}
+        {% for field in form %}
+        <!-- <div class="row g-3"> -->
+        <div class="col-md-6">
+        {{field.label}}
+            {{field}} </div>
+
+            
+      <!-- </div> -->
+        {% endfor %}
+        {% if success_message %}
+            <p style="color: green;">{{ success_message }}</p>
+          {% endif %}
+          
+          {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+          {% endif %}
+      
+       <br> 
+       <div class="text-center">
+      
+        <button   type="submit" class="btn btn-primary col-md-3  row-g-3" >Add</button> </div> 
+      </form>
+      
+       
+        </div>
+
+       
+        {% endblock %}
+
+  
