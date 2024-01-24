@@ -1,5 +1,5 @@
 from django.db import models
-
+import qrcode
 # Create your models here.
 
 class Department(models.Model):
@@ -43,6 +43,7 @@ class Assign(models.Model):
       pro_id = models.PositiveIntegerField( unique = True, verbose_name = 'Product Id')
       product = models.ForeignKey(Product, on_delete = models.DO_NOTHING)
       quantity = models.PositiveIntegerField()
+      qr_code = models.ImageField(upload_to='qr_codes/', blank=True, null=True)
 
       def __str__(self):
         return self.name

@@ -14,5 +14,6 @@ urlpatterns = [
     path('delete/<str:pk>/', views.delete, name='delete' ),
     path('deleteProduct/<str:pk>/', views.delete_product, name='deleteProduct' ),
     path('updateProduct/<str:pk>/', views.update_product, name='updateProduct' ),
+    path('generate_invoice/<int:pro_id>/', views.generate_invoice, name='generate_invoice'),
     
 ]

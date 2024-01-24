@@ -1,0 +1,69 @@
+{% block content %}
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .invoice {
+            width: 80%;
+            margin: 20px auto;
+        }
+        .invoice h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .invoice-details {
+            margin-bottom: 20px;
+        }
+        .assign-details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .assign-details th, .assign-details td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice">
+        <h2>Invoice</h2>
+        
+        <div class="invoice-details">
+            <p><strong>Name:</strong> {{ assign.name }}</p>
+            <p><strong>Date:</strong> {{ assign.assigned_date }}</p>
+        </div>
+
+        <div class="assign-details">
+            <h3>Allocation Details</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Department</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ assign.pro_id }}</td>
+                        <td>{{ assign.product }}</td>
+                        <td>{{ assign.quantity }}</td>
+                        <td>{{ assign.department }}</td>
+                        
+                       
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="qr-code" style="margin-top: 20px;">
+    <img src="{{ assign.qr_code.url }}" alt="QR Code" style="max-width: 100%; height: auto;">
+</div>
+</body>
+{% endblock %}

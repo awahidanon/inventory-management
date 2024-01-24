@@ -1,12 +1,25 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Category, Department, Assign
 from .forms import product_form, Assign_form
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.utils import timezone
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from xhtml2pdf import pisa
+from django.core.files.base import ContentFile
+import qrcode
+from PIL import Image
+import io
+
+
 
 
 # Create your views here.
 def index(request):
     assign = None
     error_message = None
+    success_message = None
     product  = Product.objects.all()
     department = Department.objects.all()
     if request.method == 'POST':
@@ -18,13 +31,14 @@ def index(request):
                 productassign.quantity -= assign.quantity
                 productassign.save()
                 assign.save()
+                success_message = "the product has been assigned." 
 
         else:
           error_message = "Insufficient quantity available." 
 
     form = Assign_form()
 
-    context = {'product': product, 'department': department, 'form': form, 'assign': assign, 'error_message': error_message }
+    context = {'product': product, 'department': department, 'form': form, 'assign': assign, 'error_message': error_message, 'success_message':success_message }
 
     return render(request, 'ims/index.html', context)
 
@@ -101,3 +115,47 @@ def update_product(request, pk):
     context = {'form': form, 'success_message': success_message}
     
     return render(request, 'ims/assign.html', context)
+
+
+def generate_invoice(request, pro_id):
+    assign = get_object_or_404(Assign, id=pro_id)
+
+    generate_qr_code(assign)
+    content = render_to_string('ims/invoice.html', {'assign': assign})
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename=invoice_{timezone.now()}.pdf'
+
+
+    status = pisa.CreatePDF(content, dest=response)
+
+    if status.err:
+        return HttpResponse("Error creating PDF", status=500)
+
+    return response
+
+
+
+
+
+
+def generate_qr_code(assign):
+    
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(f"Assign ID: {assign.id} \n Name: {assign.name}  \n product: {assign.product}  \n department: {assign.department}"  )
+    qr.make(fit=True)
+
+   
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    
+    img_bytes = io.BytesIO()
+    img.save(img_bytes, format='PNG')
+
+    
+    assign.qr_code.save(f'qr_code_{assign.id}.png', ContentFile(img_bytes.getvalue()))

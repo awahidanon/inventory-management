@@ -8,6 +8,14 @@
 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
 Assign product
   </button>
+        {% if success_message %}
+          <p style="color: green;">{{ success_message }}</p>
+          <a href="{% url 'generate_invoice' assign.id %}" target="_blank">Generate Invoice</a>
+        {% endif %}
+        
+        {% if error_message %}
+          <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
   
   <!-- Modal -->
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -33,13 +41,7 @@ Assign product
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-secondary">Assign</button>
-          {% if success_message %}
-          <p style="color: green;">{{ success_message }}</p>
-        {% endif %}
-        
-        {% if error_message %}
-          <p style="color: red;">{{ error_message }}</p>
-        {% endif %}
+          
           
         </div>
       </div>
