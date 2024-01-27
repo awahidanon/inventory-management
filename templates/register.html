@@ -1,0 +1,15 @@
+{% extends 'main.html' %} <!-- Extend your base template if you have one -->
+
+{% block content %}
+
+<div class="container" text-center>
+
+    <form action="" method="POST">
+        
+    {% csrf_token %}
+    {{ form.as_p }}
+     <input type="submit" class="btn btn-primary" value="register">
+    </div>
+</form>
+</div>
+{% endblock %}

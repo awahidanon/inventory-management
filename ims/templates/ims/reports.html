@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container" >
+    <br>
+    <h1>Report</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="period">Select Period:</label>
+        <select name="period" id="period">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+        </select>
+        <button type="submit">Generate Report</button>
+    </form>
+
+    <!-- Display the report content here if needed -->
+</div>
+    {% endblock %}

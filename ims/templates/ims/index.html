@@ -99,7 +99,7 @@ Assign product
         <div class="col-6 col-md-4 "> 
             <h4> Department </h4>
             {% for departments in department %}
-          <a href="" class="text-decoration-none">  <ul class="list-group list-group">
+          <a href="{% url 'view_department' %}?q={{departments.name}}" class="text-decoration-none">  <ul class="list-group list-group">
               <li class="list-group-item d-flex justify-content-between align-items-start">
                 <div class="ms-2 me-auto">
                   <div class="fw-bold">{{departments.name}}</div>
@@ -112,8 +112,24 @@ Assign product
 
 
 
-        </div>
+        <hr>
+        
+          <h4> Catagory </h4>
+          {% for categories in category %}
+        <a href="{% url 'view_category' %}?q={{categories.name}}" class="text-decoration-none">  <ul class="list-group list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">{{categories.name}}</div>
+      
+              </div>
+              <span class="badge bg-primary rounded-pill">{{categories.assign_set.all.count}}</span>
+            </li>
+          </ul> </a> 
+          {% endfor %}
 
+
+
+      </div>
 
 
 

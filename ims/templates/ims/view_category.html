@@ -4,7 +4,6 @@
 <div class="container text-center">
 <h4> Allocated Products</h4> </div>
 <div class="container" > 
-  <hr>
 <table class="table table-striped">
     <thead>
       <tr>
@@ -21,11 +20,11 @@
     </thead>
     <tbody>
         
-      {% for products in assigned_product %}
+      {% for products in category_view %}
       
       <tr> 
-        <td>{{products.pro_id}}</td>
-        <td>{{products.name}}</td>
+        <td>{{products.id}}</td>
+        <td>{{products.name }}</td>
         <td>{{products.product}}</td>
         <td>{{products.category}}</td>
         <td>{{products.quantity}}</td>
@@ -41,5 +40,4 @@
       
 
     </div>
-    
 {% endblock %}

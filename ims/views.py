@@ -1,27 +1,34 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Category, Department, Assign
-from .forms import product_form, Assign_form
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from xhtml2pdf import pisa
 from django.core.files.base import ContentFile
+from .models import Product, Category, Department, Assign
+from .forms import product_form, Assign_form
+from xhtml2pdf import pisa
+from datetime import datetime, timedelta
+from openpyxl.styles import Alignment
+import pandas as pd
 import qrcode
-from PIL import Image
 import io
 
 
 
 
+
 # Create your views here.
+@login_required
 def index(request):
+
     assign = None
     error_message = None
     success_message = None
     product  = Product.objects.all()
     department = Department.objects.all()
+    category = Category.objects.all()
+
     if request.method == 'POST':
         form = Assign_form(request.POST)
         if form.is_valid():
@@ -37,16 +44,17 @@ def index(request):
           error_message = "Insufficient quantity available." 
 
     form = Assign_form()
-
-    context = {'product': product, 'department': department, 'form': form, 'assign': assign, 'error_message': error_message, 'success_message':success_message }
-
+    context = {'product': product, 'department': department,'category':category  ,'form': form, 'assign': assign, 'error_message': error_message, 'success_message':success_message }
+    
     return render(request, 'ims/index.html', context)
 
+@login_required
 def assigned_product(request):
     product = Assign.objects.all()
     context = { 'assigned_product':product}
     return render(request, 'ims/products.html', context)
 
+@login_required
 def add_product(request):
     success_message = None
     error_message = None
@@ -55,7 +63,8 @@ def add_product(request):
        if form.is_valid():
            form.save()
            success_message = "successfully created!"
-       error_message = "faild to add!"
+       else: 
+           error_message = "The product is already added please update!" 
     else:
         
         form = product_form()
@@ -68,6 +77,20 @@ def product_detail(request, pk):
     product = Product.objects.filter(id = pk)
     context = {'product': product}
     return render(request, "ims/details.html", context)
+
+def department_view(request):
+    q = request.GET.get('q') if request.GET.get('q') != None  else ''
+    department_view = Assign.objects.filter(department__name=q) 
+    context = {'department_view':department_view }
+
+    return render(request, 'ims/view_departments.html', context ) 
+
+def category_view(request):
+    q = request.GET.get('q') if request.GET.get('q') != None  else ''
+    category_view = Assign.objects.filter(category__name=q) 
+    context = {'category_view':category_view }
+
+    return render(request, 'ims/view_category.html', context ) 
 
 #delete store products
 def delete(request,pk):
@@ -125,18 +148,11 @@ def generate_invoice(request, pro_id):
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename=invoice_{timezone.now()}.pdf'
-
-
     status = pisa.CreatePDF(content, dest=response)
 
     if status.err:
         return HttpResponse("Error creating PDF", status=500)
-
     return response
-
-
-
-
 
 
 def generate_qr_code(assign):
@@ -147,15 +163,70 @@ def generate_qr_code(assign):
         box_size=10,
         border=4,
     )
-    qr.add_data(f"Assign ID: {assign.id} \n Name: {assign.name}  \n product: {assign.product}  \n department: {assign.department}"  )
+    qr.add_data(f"Assign ID: {assign.pro_id} \n Name: {assign.name}  \n product: {assign.product}  \n department: {assign.department}"  )
     qr.make(fit=True)
-
-   
     img = qr.make_image(fill_color="black", back_color="white")
-
-    
     img_bytes = io.BytesIO()
     img.save(img_bytes, format='PNG')
-
-    
     assign.qr_code.save(f'qr_code_{assign.id}.png', ContentFile(img_bytes.getvalue()))
+
+
+@login_required
+def generate_report(request, period):
+    if period == 'daily':
+        start_date = datetime.now().date()
+        end_date = start_date + timedelta(days=1)
+    elif period == 'weekly':
+        start_date = (datetime.now() - timedelta(days=datetime.now().weekday())).date()
+        end_date = start_date + timedelta(weeks=1)
+    elif period == 'monthly':
+        start_date = datetime.now().replace(day=1).date()
+        end_date = (start_date.replace(month=start_date.month % 12 + 1, day=1))
+    else:
+        return HttpResponse("Invalid period", status=400)
+
+    assign = Assign.objects.filter(assigned_date__range=(start_date, end_date))
+    if request.method == 'POST':
+        data = {
+                'ID': [assign.id for assign in assign],
+                'Name': [assign.name for assign in assign],
+                'Product': [assign.product for assign in assign],
+                'Quantity': [assign.quantity for assign in assign],
+                'Date Ordered': [assign.assigned_date for assign in assign],
+            }
+        df = pd.DataFrame(data)
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f'attachment; filename=sales_report_{period}.xlsx'
+        with pd.ExcelWriter(response, engine='openpyxl') as writer:
+                df.to_excel(writer, sheet_name='Sales Report', index=False)
+                
+                workbook = writer.book
+                worksheet = writer.sheets['Sales Report']
+
+                for row in worksheet.iter_rows(min_row=1, max_col=worksheet.max_column, max_row=worksheet.max_row):
+                    for cell in row:
+                        cell.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+
+                for column in worksheet.columns:
+                    max_length = 0
+                    column = [col for col in column]
+                    try:
+                        max_length = max(len(str(cell.value)) for cell in column)
+                        adjusted_width = (max_length + 2)
+                        worksheet.column_dimensions[column[0].column_letter].width = adjusted_width
+                    except:
+                        pass
+
+        return response
+    else:
+        return render(request, 'ims/reports.html')
+    
+@login_required
+def assign_report(request):
+    if request.method == 'POST':
+        period = request.POST.get('period', 'daily')  
+        return generate_report(request, period)
+    return render(request, 'ims/reports.html')
+
+
+

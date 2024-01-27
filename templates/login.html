@@ -1,0 +1,69 @@
+{% extends 'main.html' %} <!-- Extend your base template if you have one -->
+
+{% block content %}
+
+<style>
+  body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+  }
+
+  .login-container {
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+  }
+
+  .login-form {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .form-input {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+  }
+
+  .form-submit {
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+  }
+  .forgot-password {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #3498db;
+            text-decoration: none;
+            display: inline-block;
+        }
+</style>
+
+
+<div class="login-container">
+  <h2>Login</h2>
+  <form class="login-form" action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      <input class="form-input" type="text" name="username" placeholder="Username" required>
+      <input class="form-input" type="password" name="password" placeholder="Password" required>
+      <button class="form-submit" type="submit">Login</button>
+      <a class="forgot-password" href="{% url 'reset_password' %}">Forgot Password?</a>
+  </form>
+  <!-- Add links for password reset, registration, etc. if needed -->
+</div>
+{% endblock %}

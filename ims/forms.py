@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 from .models import Product, Assign
+from django.contrib.auth.forms import AuthenticationForm
 
 
 
@@ -25,16 +26,18 @@ class Assign_form(ModelForm):
     class Meta:
         model = Assign
 
-        fields = ['name', 'department', 'pro_id', 'product', 'quantity']
+        fields = ['name', 'department', 'pro_id', 'product','category', 'quantity']
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'department': forms.Select(attrs={'class': 'form-control'}),
             'pro_id': forms.TextInput(attrs={'class': 'form-control'}),
             'product': forms.Select(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
             'quantity': forms.TextInput(attrs={'class': 'form-control'}),
             
             }
         
     
-
+class CustomUserLoginForm(AuthenticationForm):
+   pass

@@ -4,13 +4,11 @@
 <div class="container text-center">
 <h4> Allocated Products</h4> </div>
 <div class="container" > 
-  <hr>
 <table class="table table-striped">
     <thead>
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Name</th>
-        <th scope="col">Product</th>
         <th scope="col">Category</th>
         <th scope="col">Quantity</th>
         <th scope="col">Assigned Date</th>
@@ -21,13 +19,12 @@
     </thead>
     <tbody>
         
-      {% for products in assigned_product %}
+      {% for products in department_view %}
       
       <tr> 
         <td>{{products.pro_id}}</td>
         <td>{{products.name}}</td>
         <td>{{products.product}}</td>
-        <td>{{products.category}}</td>
         <td>{{products.quantity}}</td>
         <td>{{products.assigned_date}}</td>
         <td>{{products.department}}</td>
@@ -41,5 +38,4 @@
       
 
     </div>
-    
 {% endblock %}
