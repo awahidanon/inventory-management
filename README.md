@@ -1,4 +1,4 @@
-Inventory management is designed to implement asset management system for an engineering organization comprising multiple departments. This system is focused on tracking procured products, their allocation to staff members, and the recording of pertinent information, including the staff member's name, department, and other relevant details.ensuring accurate records of the allocation process.
+Inventory management is designed to implement product management system for an engineering organization comprising multiple departments. This system is focused on tracking procured products, their allocation to staff members, and the recording of pertinent information, including the staff member's name, department, and other relevant details.ensuring accurate records of the allocation process.
 
 - it generates invoice and Qr codes for each assigned products.
 - it exports daily, weekly and monthly assigned products.
