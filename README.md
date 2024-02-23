@@ -28,3 +28,8 @@ Inventory management is designed to implement product management system for an e
 
 - run the App
 ```python manage.py runserver ```
+
+
+<img width="1531" alt="Screenshot 2024-01-27 at 4 53 03 in the afternoon" src="https://github.com/awahidanon/inventory-management/assets/92226916/9c8d6b55-40ab-4644-bb05-71567d945ae6">
+<img width="1728" alt="Screenshot 2024-01-27 at 5 31 02 in the afternoon" src="https://github.com/awahidanon/inventory-management/assets/92226916/e26717e2-215f-4457-b389-6e6940d69f82">
+<img width="1712" alt="Screenshot 2024-02-23 at 11 18 01 in the morning" src="https://github.com/awahidanon/inventory-management/assets/92226916/22ef28a2-b2d5-4587-a0c1-a2c9e61e7f7a">
