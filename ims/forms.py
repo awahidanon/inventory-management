@@ -1,8 +1,8 @@
-from django.forms import ModelForm
 from django import forms
-from .models import Product, Assign
 from django.contrib.auth.forms import AuthenticationForm
+from django.forms import ModelForm
 
+from .models import Assign, Product
 
 
 class product_form(ModelForm):

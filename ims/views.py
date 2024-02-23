@@ -1,21 +1,19 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from django.utils import timezone
-from django.core.files.base import ContentFile
-from .models import Product, Category, Department, Assign
-from .forms import product_form, Assign_form
-from xhtml2pdf import pisa
+import io
 from datetime import datetime, timedelta
-from openpyxl.styles import Alignment
+
 import pandas as pd
 import qrcode
-import io
+from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.utils import timezone
+from openpyxl.styles import Alignment
+from xhtml2pdf import pisa
 
-
-
+from .forms import Assign_form, product_form
+from .models import Assign, Category, Department, Product
 
 
 # Create your views here.

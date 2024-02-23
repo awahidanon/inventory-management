@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
-from .forms import CustomUserLoginForm,CustomUserCreationForm
-from django.contrib.auth.views import LoginView, LogoutView, logout_then_login
 from django.conf import settings
-from django.urls import reverse_lazy
-from django.shortcuts import resolve_url
-from django.urls import reverse_lazy
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login , logout 
 from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView, logout_then_login
+from django.shortcuts import redirect, render, resolve_url
+from django.urls import reverse_lazy
+
+from .forms import CustomUserCreationForm, CustomUserLoginForm
+
 # Create your views here.
 
 class Login(LoginView):

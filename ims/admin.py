@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import Category, Department, Product, Assign
 from django.contrib.auth.admin import UserAdmin
+
+from .models import Assign, Category, Department, Product
+
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Department)
