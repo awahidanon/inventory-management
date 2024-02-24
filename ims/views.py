@@ -19,7 +19,6 @@ from .models import Assign, Category, Department, Product
 # Create your views here.
 @login_required
 def index(request):
-
     assign = None
     error_message = None
     success_message = None
@@ -85,7 +84,7 @@ def department_view(request):
 
 def category_view(request):
     q = request.GET.get('q') if request.GET.get('q') != None  else ''
-    category_view = Assign.objects.filter(category__name=q) 
+    category_view = Assign.objects.filter(product__product_category__name=q)
     context = {'category_view':category_view }
 
     return render(request, 'ims/view_category.html', context ) 
@@ -154,7 +153,6 @@ def generate_invoice(request, pro_id):
 
 
 def generate_qr_code(assign):
-    
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,

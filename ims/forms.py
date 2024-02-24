@@ -26,14 +26,13 @@ class Assign_form(ModelForm):
     class Meta:
         model = Assign
 
-        fields = ['name', 'department', 'pro_id', 'product','category', 'quantity']
+        fields = ['name', 'department', 'pro_id', 'product', 'quantity']
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'department': forms.Select(attrs={'class': 'form-control'}),
             'pro_id': forms.TextInput(attrs={'class': 'form-control'}),
             'product': forms.Select(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
             'quantity': forms.TextInput(attrs={'class': 'form-control'}),
             
             }

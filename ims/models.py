@@ -42,7 +42,6 @@ class Assign(models.Model):
       department = models.ForeignKey(Department, on_delete = models.CASCADE)
       assigned_date = models.DateField(auto_now_add = True) 
       pro_id = models.PositiveIntegerField( unique = True, verbose_name = 'Product Id')
-      category = models.ForeignKey(Category, on_delete = models.CASCADE)
       product = models.ForeignKey(Product, on_delete = models.DO_NOTHING)
       quantity = models.PositiveIntegerField()
       qr_code = models.ImageField(upload_to='qr_codes/', blank=True, null=True)
